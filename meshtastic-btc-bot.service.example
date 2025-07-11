@@ -1,0 +1,25 @@
+[Unit]
+Description=Meshtastic Bitcoin Bot Service
+After=network.target
+
+[Service]
+# User and Group that will run the service
+User=your_linux_user
+Group=your_linux_group
+
+# The directory where your project is located
+WorkingDirectory=/home/your_linux_user/meshtastic-bitcoin-bot
+
+# The command to start the bot
+# It's recommended to use a virtual environment
+ExecStart=/home/your_linux_user/meshtastic-bitcoin-bot/venv/bin/python scripts/main.py
+
+# Environment file for credentials
+EnvironmentFile=/home/your_linux_user/meshtastic-bitcoin-bot/.env
+
+# Restart the service if it fails
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
