@@ -88,11 +88,12 @@ class BitcoinRPC:
         except ValueError:
             return {"error": "Invalid amount specified."}
 
+        # --- FEE CALCULATION LOGIC ---
+        # 1. Calculate the operator fee based on the amount being sent. This is a separate value.
         operator_fee_btc = send_amount_btc * (Decimal(config.NODE_OPERATOR_FEE_PERCENT) / Decimal(100))
 
-        # Estimate miner fee
+        # 2. Estimate the Bitcoin network miner fee. This is also a separate value.
         try:
-            # A typical 1-input, 2-output P2WPKH tx is ~141 vB
             TX_VBYTES = 141 
             fee_rate_btc_per_kvb = self.rpc_connection.estimatesmartfee(6)["feerate"]
             miner_fee_btc = (Decimal(fee_rate_btc_per_kvb) / Decimal(1000)) * Decimal(TX_VBYTES)
@@ -100,6 +101,7 @@ class BitcoinRPC:
             logging.warning(f"Could not estimate miner fee, using fallback. Error: {e}")
             miner_fee_btc = Decimal("0.00001000") # Fallback fee
 
+        # 3. The total cost for the sender is the SUM of the amount, the operator's fee, and the miner's fee.
         total_btc = send_amount_btc + operator_fee_btc + miner_fee_btc
         
         wallet_rpc = self.get_rpc_for_wallet(wallet_name)
@@ -107,12 +109,13 @@ class BitcoinRPC:
         if balance_btc < total_btc:
             return {"error": f"Insufficient funds. Need ~{total_btc:.8f} BTC, have {balance_btc:.8f} BTC."}
 
+        # 4. The transaction is constructed with two outputs. The recipient is NOT affected by the fee.
         return {
             "user_id": user_id,
             "wallet_name": wallet_name,
             "outputs": {
-                to_address: f"{send_amount_btc:.8f}",
-                config.NODE_OPERATOR_ADDRESS: f"{operator_fee_btc:.8f}"
+                to_address: f"{send_amount_btc:.8f}",              # Output 1: Recipient gets the full intended amount.
+                config.NODE_OPERATOR_ADDRESS: f"{operator_fee_btc:.8f}" # Output 2: Node operator gets the fee.
             },
             "miner_fee_btc": f"{miner_fee_btc:.8f}",
             "total_btc": f"{total_btc:.8f}"

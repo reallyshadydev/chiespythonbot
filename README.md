@@ -16,7 +16,7 @@ This enhanced version includes critical safety features like a two-step transact
 - **User-Specific Wallets**: Automatically creates and manages a separate Bitcoin wallet for each Meshtastic user ID.
 - **Safe Transactions**: A **two-step confirmation process** prevents accidental sends.
 - **Fee Transparency**: Estimates and displays the **Bitcoin miner fee** before sending.
-- **Node Operator Fees**: Automatically deducts a configurable percentage from each transaction as a fee for the node operator.
+- **Node Operator Fees**: Automatically **adds** a configurable percentage to the transaction total, which is paid by the sender to the node operator.
 - **Balance Inquiry**: Check wallet balance in both BTC and its real-time USD equivalent.
 - **Flexible Sending**: Send Bitcoin by specifying an amount in either BTC or USD (e.g., `0.001` or `$5.00`).
 - **Transaction History**: View your last few transactions with the `!history` command.
