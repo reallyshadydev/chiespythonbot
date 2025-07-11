@@ -1,0 +1,4 @@
+meshtastic
+python-bitcoinrpc
+requests
+python-dotenv

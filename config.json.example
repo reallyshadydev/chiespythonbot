@@ -1,0 +1,37 @@
+{
+  "device": {
+    "is_router": true,
+    "serial_disabled": false,
+    "serial_echo": false
+  },
+  "channel": {
+    "psk": "AQ==",
+    "name": "LongRangeMesh"
+  },
+  "wifi": {
+    "ssid": "MyWiFi",
+    "password": "MyWiFiPassword",
+    "enabled": true
+  },
+  "position": {
+    "latitude": 37.7749,
+    "longitude": -122.4194,
+    "altitude": 30
+  },
+  "power": {
+    "battery_voltage": 4.1,
+    "is_powered": true
+  },
+  "region": "US",
+  "deviceProfile": "default",
+  "bluetooth": {
+    "enabled": true
+  },
+  "display": {
+    "screen_on": true
+  },
+  "lora": {
+    "modem_preset": "long_fast",
+    "tx_power": 20
+  }
+}
